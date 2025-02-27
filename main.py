@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Shebang is not needed for Windows.
+# shebang is not needed for Windows. Leaving for basic Unix support.
 import tkinter as tk
 from tkinter import ttk
 import subprocess
@@ -11,46 +11,51 @@ def scan_wifi():
     
     networks = []
     ssid = None
-    
-    for line in result.stdout.split("\n"):
-        line = line.strip()
+    mac = None
+
+    lines = result.stdout.split("\n")
+    for i in range(len(lines)):
+        line = lines[i].strip()
+
         ssid_match = re.match(r"SSID \d+ : (.+)", line)
         mac_match = re.match(r"BSSID \d+ *: ([0-9A-Fa-f:-]+)", line)
-        signal_match = re.search(r"Signal *: (\d+)%", line)
-        
+
         if ssid_match:
-            ssid = ssid_match.group(1)
-        elif mac_match and ssid:
+            ssid = ssid_match.group(1) if ssid_match.group(1).strip() else "Hidden SSID"
+        
+        elif mac_match:
             mac = mac_match.group(1)
-            if signal_match:
-                signal_percent = int(signal_match.group(1))
-                signal_dbm = (signal_percent / 2) - 100  # Convert percentage to dBm
-            else:
-                signal_dbm = -100  # Default to lowest signal if not found
-            networks.append((ssid, mac, signal_dbm))
-    
-    networks.sort(key=lambda x: x[2], reverse=True)
-    
+            # The next line should contain the Signal Strength
+            if i + 1 < len(lines):
+                signal_match = re.search(r"Signal\s*:\s*(\d+)%", lines[i + 1].strip())
+                if signal_match:
+                    signal = f"{signal_match.group(1)}%"
+                else:
+                    signal = "N/A"
+                networks.append((ssid, mac, signal))
+
+    # Clear the table
     for row in tree.get_children():
         tree.delete(row)
     
-    for net in networks:
+    # Insert new scan results
+    for net in sorted(networks, key=lambda x: int(x[2].replace('%', '')), reverse=True):
         tree.insert("", tk.END, values=net)
 
 root = tk.Tk()
-root.title("Dot11 Scan")
-root.geometry("720x340")
+root.title("Goobys Wi-Fi Scanner")
+root.geometry("720x480")
 
-columns = ("SSID", "MAC Address", "Signal Strength (-dBm)")
+columns = ("SSID", "MAC Address", "Signal Strength")
 tree = ttk.Treeview(root, columns=columns, show="headings")
 
 for col in columns:
     tree.heading(col, text=col)
-    tree.column(col, width=300)
+    tree.column(col, width=120)
 
 tree.pack(expand=True, fill="both")
 
-scan_button = tk.Button(root, text="Scan for DOT11", command=scan_wifi)
+scan_button = tk.Button(root, text="Scan DOT11 RF", command=scan_wifi)
 scan_button.pack(pady=10)
 
 root.mainloop()

@@ -2,7 +2,9 @@
 
 Sometimes I need to take a quick reading of the 802.11 networks in range of my Windows laptop.
 
-| **SSID** | **Broadcast MAC** | **Signal Strength (-dBm)**|
+**Current Version:** 0.1.0
+
+| **SSID** | **Broadcast MAC** | **Signal Strength**|
 | --- | --- | --- |
 | Data | Data | Data |
 
