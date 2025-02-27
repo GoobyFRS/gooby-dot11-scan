@@ -6,7 +6,7 @@ Sometimes I need to take a quick reading of the 802.11 networks in range of my W
 
 | **SSID** | **Broadcast MAC** | **Signal Strength**|
 | --- | --- | --- |
-| Data | Data | Data |
+| Data | a1:b2:c3:e4:f6:78 | Percentage/100 |
 
 ### Project Setup
 
