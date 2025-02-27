@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# Shebang is not needed for Windows.
 import tkinter as tk
 from tkinter import ttk
 import subprocess
@@ -36,8 +38,8 @@ def scan_wifi():
         tree.insert("", tk.END, values=net)
 
 root = tk.Tk()
-root.title("Wi-Fi Scanner")
-root.geometry("1280x720")
+root.title("Dot11 Scan")
+root.geometry("720x340")
 
 columns = ("SSID", "MAC Address", "Signal Strength (-dBm)")
 tree = ttk.Treeview(root, columns=columns, show="headings")
@@ -48,7 +50,7 @@ for col in columns:
 
 tree.pack(expand=True, fill="both")
 
-scan_button = tk.Button(root, text="Scan Wi-Fi", command=scan_wifi)
+scan_button = tk.Button(root, text="Scan for DOT11", command=scan_wifi)
 scan_button.pack(pady=10)
 
 root.mainloop()
