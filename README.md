@@ -30,7 +30,8 @@ python3 ./main.py
 
 ### Screenshot
 
-![v012-image](https://github.com/user-attachments/assets/479812a5-e6dc-4b69-a7c6-453d2b210912)
+![image](https://github.com/user-attachments/assets/0f1abe02-76d6-4750-b330-80fed9ae0d0b)
+
 
 ```txt
 ----------------------------------------
