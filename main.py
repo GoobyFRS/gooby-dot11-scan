@@ -111,9 +111,10 @@ help_menu = tk.Menu(menu_bar, tearoff=0)
 help_menu.add_command(label="Check for Updates", command=show_check_4_updates)
 menu_bar.add_cascade(label="Help", menu=help_menu)
 
-# Attach menu bar to primary window.
+# Attach/Append menu bar to primary window.
 root.config(menu=menu_bar)
 
+# MAIN DATA TABLE DISPLAY BELOW THIS LINE!
 # Define table columns.
 columns = ("SSID", "MAC Address", "Signal Strength", "Channel")
 tree = ttk.Treeview(root, columns=columns, show="headings")
@@ -124,7 +125,9 @@ for col in columns:
 
 tree.pack(expand=True, fill="both")
 
-# Create text boxes for reference boxes below the main table.
+# MAIN DATA TABLE DISPLAY ABOVE THIS LINE!
+
+# Create text boxes for references below the main data table.
 entry_frame = tk.Frame(root)
 entry_frame.pack(fill="x", padx=10, pady=5)
 
@@ -139,6 +142,7 @@ tk.Label(entry_frame, text="Department:").grid(row=0, column=2, padx=(0, 5), sti
 department_entry = tk.Entry(entry_frame, width=20)
 department_entry.grid(row=0, column=3)
 tkt_reference_placeholder(department_entry, "Men's Shoes")  # Add tooltip effect
+# END SPACE DEDICATED TO REFERNCE BOXES
 
 # Add a manual scan button.
 scan_button = tk.Button(root, text="Scan Wi-Fi", command=scan_wifi)
@@ -148,6 +152,8 @@ scan_button.pack(pady=10)
 timestamp_label = tk.Label(root, text="", anchor="w", padx=10)
 timestamp_label.pack(side="bottom", fill="x")
 
+# END OF GUI BUILDING! ALL GUI BUILDING CODE SHOULD GO ABOVE.
+# START SCRIPT EXECUTION WORKFLOW
 # Run an initial wireless scan when the window launches.
 scan_wifi()
 
