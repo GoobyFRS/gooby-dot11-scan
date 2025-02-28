@@ -38,9 +38,8 @@ python3 ./main.py
 ----------------------------------------
 | SSID          | MAC Address  | Signal | Channel |  ⬆⬇ Scrollbar
 |--------------|--------------|--------|--------|
-| WiFi-Home    | A1:B2:C3:D4  | 67%    | 6      |
-| Guest-Network| A9:B8:C7:D6  | 45%    | 11     |
-| MANY MORE RESULTS ...        |
+| WiFi-Home    | a1:b2:c3:e4:f6:68  | 67%    | 6      |
+| Guest-Network| a1:b2:c3:e4:f6:69  | 45%    | 11     |
 ----------------------------------------
 Reference:   [ INC000012345 ]
 Department:  [ Mens Shoes   ]
