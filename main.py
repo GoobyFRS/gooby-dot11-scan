@@ -117,7 +117,14 @@ root.config(menu=menu_bar)
 # MAIN DATA TABLE DISPLAY BELOW THIS LINE!
 # Define table columns.
 columns = ("SSID", "MAC Address", "Signal Strength", "Channel")
-tree = ttk.Treeview(root, columns=columns, show="headings")
+tree_frame = tk.Frame(root)
+tree_frame.pack(expand=True, fill="both")
+
+tree_scroll = ttk.Scrollbar(tree_frame, orient="vertical")
+tree_scroll.pack(side="right", fill="y")
+
+tree = ttk.Treeview(tree_frame, columns=columns, show="headings", yscrollcommand=tree_scroll.set)
+tree_scroll.config(command=tree.yview)
 
 for col in columns:
     tree.heading(col, text=col)
@@ -125,9 +132,6 @@ for col in columns:
 
 tree.pack(expand=True, fill="both")
 
-# MAIN DATA TABLE DISPLAY ABOVE THIS LINE!
-
-# Create text boxes for references below the main data table.
 entry_frame = tk.Frame(root)
 entry_frame.pack(fill="x", padx=10, pady=5)
 
