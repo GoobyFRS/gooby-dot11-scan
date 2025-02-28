@@ -21,6 +21,8 @@ Gooby's DOT11 Scanner currently has 0 dependancies outside a full Python3.12 ins
 
 You may need to launch the program from an Elevated Powershell window.
 
+Best results when ran while disconnected from all networks.
+
 ```txt
 cd /path/to/repo
 python3 ./main.py

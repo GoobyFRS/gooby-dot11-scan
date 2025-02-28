@@ -57,7 +57,7 @@ def scan_wifi():
     for net in sorted_networks:
         tree.insert("", tk.END, values=net)
 
-    root.after(15000, scan_wifi)  # Auto-refresh the wireless data every 15 seconds.
+    root.after(6000, scan_wifi)  # Auto-refresh the wireless data every 6 seconds. Increase if performance issues are encountered.
 
 # Open webbrowser and send to the GitHub repo to check for updates. Called from top layer menu bar.
 def show_check_4_updates():
@@ -70,7 +70,7 @@ def exit_app():
 def update_gui_timestamp():
     current_time = time.strftime("%H:%M:%S")
     timestamp_label.config(text=f"Last Updated: {current_time}")
-    root.after(6000, update_gui_timestamp)  # Update every six seconds.
+    root.after(1000, update_gui_timestamp)  # Update every one seconds.
 
 # Create and define the text boxes to support user-provided reference data.
 def tkt_reference_placeholder(entry, placeholder):
@@ -135,13 +135,13 @@ entry_frame.pack(fill="x", padx=10, pady=5)
 tk.Label(entry_frame, text="Reference:").grid(row=0, column=0, padx=(0, 5), sticky="w")
 reference_entry = tk.Entry(entry_frame, width=20)
 reference_entry.grid(row=0, column=1, padx=(0, 20))
-tkt_reference_placeholder(reference_entry, "INC000012345")  # Add tooltip effect
+tkt_reference_placeholder(reference_entry, "INC000012345")
 
 # Department Reference text box.
 tk.Label(entry_frame, text="Department:").grid(row=0, column=2, padx=(0, 5), sticky="w")
 department_entry = tk.Entry(entry_frame, width=20)
 department_entry.grid(row=0, column=3)
-tkt_reference_placeholder(department_entry, "Men's Shoes")  # Add tooltip effect
+tkt_reference_placeholder(department_entry, "Men's Shoes")
 # END SPACE DEDICATED TO REFERNCE BOXES
 
 # Add a manual scan button.
