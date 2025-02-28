@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 import subprocess
 import re
+import webbrowser
+import time
 
 def scan_wifi():
     """ Powershell command example output
@@ -27,68 +29,130 @@ def scan_wifi():
     ps_cmd_output = subprocess.run(command, capture_output=True, text=True, shell=True)
     
     networks = []
-    current_ssid = None  # Stores the current SSID while parsing
-    current_bssid = None  # Stores the last BSSID encountered
+    current_ssid = None
+    current_bssid = None
 
     for line in ps_cmd_output.stdout.split("\n"):
         line = line.strip()
 
-        # Match SSID, BSSID, Signal Strength, and Channel using regex.
         ssid_match = re.match(r"SSID \d+ : (.+)", line)
         mac_match = re.match(r"BSSID \d+ *: ([0-9A-Fa-f:-]+)", line)
         signal_match = re.match(r"Signal\s*:\s*(\d+)%", line)
         channel_match = re.match(r"Channel\s*:\s*(\d+)", line)
 
         if ssid_match:
-            # If an SSID is empty, label it as "Hidden SSID"
             current_ssid = ssid_match.group(1).strip() or "Hidden SSID"
         elif mac_match and current_ssid:
-            # Start a new BSSID entry
             current_bssid = mac_match.group(1)
-            networks.append([current_ssid, current_bssid, "N/A", "N/A"])  # Default values
+            networks.append([current_ssid, current_bssid, "No Data", "No Data"])
         elif signal_match and current_bssid:
-            # Update the last added entry with signal strength
             networks[-1][2] = f"{signal_match.group(1)}%"
         elif channel_match and current_bssid:
-            # Update the last added entry with channel
             networks[-1][3] = channel_match.group(1)
 
-    # Clear existing data before inserting new results.
     tree.delete(*tree.get_children())
 
-    # Sort networks by signal strength (descending), treating "N/A" as the weakest.
     sorted_networks = sorted(networks, key=lambda x: int(x[2].strip('%')) if x[2] != "N/A" else -1, reverse=True)
 
-    # Populate the table with sorted networks.
     for net in sorted_networks:
         tree.insert("", tk.END, values=net)
 
-    # Schedule the next scan every 15 seconds.
-    root.after(15000, scan_wifi)
+    root.after(15000, scan_wifi)  # Auto-refresh the wireless data every 15 seconds.
 
-# Initialize the main Tkinter window.
+# Open webbrowser and send to the GitHub repo to check for updates. Called from top layer menu bar.
+def show_check_4_updates():
+    webbrowser.open("https://github.com/GoobyFRS/gooby-dot11-scan")
+
+# Clean user-prompt-able exit method. Called from top layer menu bar.
+def exit_app():
+    root.quit()
+
+def update_gui_timestamp():
+    current_time = time.strftime("%H:%M:%S")
+    timestamp_label.config(text=f"Last Updated: {current_time}")
+    root.after(6000, update_gui_timestamp)  # Update every six seconds.
+
+# Create and define the text boxes to support user-provided reference data.
+def tkt_reference_placeholder(entry, placeholder):
+    # Adds a placeholder effect to the entry field
+    def on_focus_in(event): # Event is called during runtime. DO NOT CHANGE.
+        if entry.get() == placeholder:
+            entry.delete(0, tk.END)
+            entry.config(fg="black")  # User-Input data in Black instead of grey.
+
+    def on_focus_out(event):
+        if not entry.get():
+            entry.insert(0, placeholder)
+            entry.config(fg="gray")  # User-Input data in Black instead of grey.
+
+    entry.insert(0, placeholder)
+    entry.config(fg="gray")
+    entry.bind("<FocusIn>", on_focus_in)
+    entry.bind("<FocusOut>", on_focus_out)
+
+# ALL APPLICATION FUNCTIONS BELONG ABOVE THIS LINE!
+# ALL GUI BUILDING BELOG BELOW THIS LINE!
+
+# Build the main application window.
 root = tk.Tk()
-root.title("Matts Wi-Fi Scanner")
-root.geometry("720x480")  # Set default window size
+root.title("Matts Wi-Fi Scanner - v0.1.2")
+root.geometry("720x480")
 
-# Define table columns
+# Create the top layer menu bar.
+menu_bar = tk.Menu(root)
+
+# File menu in the top layer menu bar.
+file_menu = tk.Menu(menu_bar, tearoff=0)
+file_menu.add_command(label="Exit", command=exit_app)
+menu_bar.add_cascade(label="File", menu=file_menu)
+
+# Help menu in the top layer menu bar.
+help_menu = tk.Menu(menu_bar, tearoff=0)
+help_menu.add_command(label="Check for Updates", command=show_check_4_updates)
+menu_bar.add_cascade(label="Help", menu=help_menu)
+
+# Attach menu bar to primary window.
+root.config(menu=menu_bar)
+
+# Define table columns.
 columns = ("SSID", "MAC Address", "Signal Strength", "Channel")
 tree = ttk.Treeview(root, columns=columns, show="headings")
 
-# Configure column headings and widths.
 for col in columns:
     tree.heading(col, text=col)
     tree.column(col, width=140)
 
-# Add the table to the GUI
 tree.pack(expand=True, fill="both")
+
+# Create text boxes for reference boxes below the main table.
+entry_frame = tk.Frame(root)
+entry_frame.pack(fill="x", padx=10, pady=5)
+
+# Incident Reference text box.
+tk.Label(entry_frame, text="Reference:").grid(row=0, column=0, padx=(0, 5), sticky="w")
+reference_entry = tk.Entry(entry_frame, width=20)
+reference_entry.grid(row=0, column=1, padx=(0, 20))
+tkt_reference_placeholder(reference_entry, "INC000012345")  # Add tooltip effect
+
+# Department Reference text box.
+tk.Label(entry_frame, text="Department:").grid(row=0, column=2, padx=(0, 5), sticky="w")
+department_entry = tk.Entry(entry_frame, width=20)
+department_entry.grid(row=0, column=3)
+tkt_reference_placeholder(department_entry, "Men's Shoes")  # Add tooltip effect
 
 # Add a manual scan button.
 scan_button = tk.Button(root, text="Scan Wi-Fi", command=scan_wifi)
 scan_button.pack(pady=10)
 
-# Run the first scan when the application starts.
+# Append Timestamp to the bottom left of the window.
+timestamp_label = tk.Label(root, text="", anchor="w", padx=10)
+timestamp_label.pack(side="bottom", fill="x")
+
+# Run an initial wireless scan when the window launches.
 scan_wifi()
+
+# Enable and display a running timestamp.
+update_gui_timestamp()
 
 # Start the Tkinter event loop.
 root.mainloop()
