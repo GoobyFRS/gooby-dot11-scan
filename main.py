@@ -6,12 +6,13 @@ import subprocess
 import re
 
 def scan_wifi():
-    command = "netsh wlan show networks mode=bssid"
+    command = "netsh wlan show networks mode=bssid" #PowerShell Command
     result = subprocess.run(command, capture_output=True, text=True, shell=True)
     
     networks = []
-    ssid = None
-    mac = None
+    #ssid = None
+    #mac = None
+    #channel = None
 
     lines = result.stdout.split("\n")
     for i in range(len(lines)):
@@ -19,6 +20,7 @@ def scan_wifi():
 
         ssid_match = re.match(r"SSID \d+ : (.+)", line)
         mac_match = re.match(r"BSSID \d+ *: ([0-9A-Fa-f:-]+)", line)
+        #channel_match = re.search(r"Channel\s*:\s*(\d+)", line)
 
         if ssid_match:
             ssid = ssid_match.group(1) if ssid_match.group(1).strip() else "Hidden SSID"
@@ -31,7 +33,7 @@ def scan_wifi():
                 if signal_match:
                     signal = f"{signal_match.group(1)}%"
                 else:
-                    signal = "N/A"
+                    signal = "No Data"
                 networks.append((ssid, mac, signal))
 
     # Clear the table
@@ -46,7 +48,7 @@ root = tk.Tk()
 root.title("Goobys Wi-Fi Scanner")
 root.geometry("720x480")
 
-columns = ("SSID", "MAC Address", "Signal Strength")
+columns = ("BSSID", "BSSID MAC Address", "Signal Strength")
 tree = ttk.Treeview(root, columns=columns, show="headings")
 
 for col in columns:
@@ -56,6 +58,6 @@ for col in columns:
 tree.pack(expand=True, fill="both")
 
 scan_button = tk.Button(root, text="Scan DOT11 RF", command=scan_wifi)
-scan_button.pack(pady=10)
+scan_button.pack(padx=10, pady=10)
 
 root.mainloop()
