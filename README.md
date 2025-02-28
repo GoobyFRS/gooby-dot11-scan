@@ -9,7 +9,7 @@ DOT11 Scan helps IT Technicians perform simple analysis of retail wireless netwo
 - Optimizing wireless network placement and configuration.
 - Troubleshooting connectivity issues.
 
-**Current Version:** 0.1.2
+**Current Version:** 0.1.3
 
 | **SSID** | **Broadcast MAC** | **Signal Strength**| **Channel** |
 | --- | --- | --- | --- |
@@ -31,3 +31,20 @@ python3 ./main.py
 ### Screenshot
 
 ![v012-image](https://github.com/user-attachments/assets/479812a5-e6dc-4b69-a7c6-453d2b210912)
+
+```txt
+----------------------------------------
+| File | Help |
+----------------------------------------
+| SSID          | MAC Address  | Signal | Channel |  ⬆⬇ Scrollbar
+|--------------|--------------|--------|--------|
+| WiFi-Home    | A1:B2:C3:D4  | 67%    | 6      |
+| Guest-Network| A9:B8:C7:D6  | 45%    | 11     |
+| MANY MORE RESULTS ...        |
+----------------------------------------
+Reference:   [ INC000012345 ]
+Department:  [ Mens Shoes   ]
+[ Scan Wi-Fi ]
+----------------------------------------
+Last Updated: 14:35:21
+```

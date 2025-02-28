@@ -95,7 +95,7 @@ def tkt_reference_placeholder(entry, placeholder):
 
 # Build the main application window.
 root = tk.Tk()
-root.title("Matts Wi-Fi Scanner - v0.1.2")
+root.title("Matts Wi-Fi Scanner - v0.1.3")
 root.geometry("720x480")
 
 # Create the top layer menu bar.
