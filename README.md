@@ -1,4 +1,4 @@
-# Gooby'a DOT11 Scanner
+# Matts DOT11 Scanner
 
 A lightweight 802.11 Wireless Network Scanner and Analysis Tool for Windows 10/11 devices. DOT11 Scan is designed as a modern replacement for Homedale, providing a user-friendly GUI for wireless network analysis.
 
@@ -9,7 +9,7 @@ DOT11 Scan helps IT Technicians perform simple analysis of retail wireless netwo
 - Optimizing wireless network placement and configuration.
 - Troubleshooting connectivity issues.
 
-**Current Version:** 0.1.3
+**Current Version:** 0.1.3 - _Portable EXE built using PyInstaller._
 
 | **SSID** | **Broadcast MAC** | **Signal Strength**| **Channel** |
 | --- | --- | --- | --- |
@@ -17,7 +17,7 @@ DOT11 Scan helps IT Technicians perform simple analysis of retail wireless netwo
 
 ## Project Setup
 
-Gooby's DOT11 Scanner currently has 0 dependancies outside a full Python3.12 installation.
+Matt's DOT11 Scanner currently has 0 dependancies outside a full Python3.12 installation.
 
 You may need to launch the program from an Elevated Powershell window.
 
@@ -31,7 +31,6 @@ python3 ./main.py
 ### Screenshot
 
 ![image](https://github.com/user-attachments/assets/0f1abe02-76d6-4750-b330-80fed9ae0d0b)
-
 
 ```txt
 ----------------------------------------
